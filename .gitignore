@@ -1,1 +1,5 @@
-﻿node_modules/`ndist/`.DS_Store`n*.log`n.env`n.vscode/
+﻿node_modules/
+dist/.DS_Store
+*.log
+.env
+.vscode/
