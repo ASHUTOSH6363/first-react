@@ -31,10 +31,23 @@ function App() {
     features: false,
   });
   const [activeSection, setActiveSection] = useState('top');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
   const toggleSection = (id) => {
     setExpanded((current) => ({ ...current, [id]: !current[id] }));
   };
+
+  useEffect(() => {
+    document.body.classList.toggle('light-theme', theme === 'light');
+    document.body.classList.toggle('dark-theme', theme === 'dark');
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const handleThemeToggle = () => {
+    setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
+  };
+
+  const themeLabel = theme === 'dark' ? 'Dark theme' : 'Light theme';
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -63,6 +76,12 @@ function App() {
       <Sidebar activeSection={activeSection} navItems={navItems} />
 
       <main className="content" id="top">
+        <div className="theme-bar">
+          <div className="theme-label">{themeLabel}</div>
+          <button type="button" className="theme-toggle-button" onClick={handleThemeToggle}>
+            Switch to {theme === 'dark' ? 'light' : 'dark'} mode
+          </button>
+        </div>
         <HeroSection />
         <ContentSections expanded={expanded} toggleSection={toggleSection} />
         <DashboardSection />
