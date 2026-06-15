@@ -66,7 +66,9 @@ body.light-theme .device-card,
 body.light-theme .stat-card,
 body.light-theme .summary-card,
 body.light-theme .step-card,
-body.light-theme .quick-index {
+body.light-theme .quick-index,
+body.light-theme .overview-panel,
+body.light-theme .dnac-card {
   background: rgba(255, 255, 255, 0.92);
   border-color: rgba(37, 99, 235, 0.2);
 }
@@ -551,6 +553,33 @@ body.light-theme .theme-toggle-button {
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
+}
+
+body.light-theme .panel,
+body.light-theme .detail-card,
+body.light-theme .feature-card,
+body.light-theme .metric-card,
+body.light-theme .activity-card,
+body.light-theme .status-chip,
+body.light-theme .timeline-card,
+body.light-theme .device-card,
+body.light-theme .stat-card,
+body.light-theme .summary-card,
+body.light-theme .step-card,
+body.light-theme .quick-index,
+body.light-theme .overview-panel,
+body.light-theme .dnac-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+body.light-theme .stat-card {
+  background: linear-gradient(180deg, rgba(248, 250, 255, 0.96), rgba(241, 245, 255, 0.92));
+}
+
+body.light-theme .packet-flow {
+  background: rgba(248, 250, 255, 0.92);
+  border-color: rgba(37, 99, 235, 0.18);
 }
 
 .overview-panel h2,
