@@ -161,14 +161,17 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, rgba(70, 217, 255, 0.22), transparent 18%),
-    radial-gradient(circle at bottom right, rgba(217, 107, 255, 0.22), transparent 16%),
-    linear-gradient(180deg, #061124 0%, #030715 100%);
   color: var(--text);
   overflow-x: hidden;
 }
 
-body::before {
+body:not(.light-theme) {
+  background: radial-gradient(circle at top left, rgba(70, 217, 255, 0.22), transparent 18%),
+    radial-gradient(circle at bottom right, rgba(217, 107, 255, 0.22), transparent 16%),
+    linear-gradient(180deg, #061124 0%, #030715 100%);
+}
+
+body:not(.light-theme)::before {
   content: "";
   position: fixed;
   inset: 0;
