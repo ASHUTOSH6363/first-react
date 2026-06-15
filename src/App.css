@@ -148,6 +148,27 @@ body.light-theme .theme-toggle-button {
 body.light-theme .theme-label {
   font-weight: 800;
   color: #2563eb;
+  background: rgba(255,255,255,0.9);
+  border-radius: 14px;
+  padding: 8px 14px;
+}
+
+body.light-theme .theme-toggle-button {
+  border: 2px solid #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.24);
+  background: linear-gradient(135deg, rgba(37,99,235,0.92), rgba(147,51,234,0.92));
+  color: #ffffff;
+}
+
+body.light-theme .nav-link:hover,
+body.light-theme .nav-link.active {
+  background: rgba(37, 99, 235, 0.16);
+  color: #061124;
+}
+
+body.light-theme .nav-link.active {
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.95), rgba(147, 51, 234, 0.95));
+  color: #061124;
 }
 
 * {
@@ -363,6 +384,7 @@ body.light-theme .theme-toggle-button {
   padding: 46px;
   border-radius: 38px;
   background: var(--surface);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }
 
@@ -661,6 +683,7 @@ body.light-theme .theme-toggle-button {
   min-height: 142px;
   border: 1px solid var(--border);
   background: var(--surface);
+  color: var(--text);
 }
 
 .stat-card strong {
@@ -1020,6 +1043,11 @@ body.light-theme .secondary-button {
   color: #111827;
   font-size: 0.92rem;
   line-height: 1.5;
+}
+
+body.light-theme .doc-note {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(37, 99, 235, 0.12);
 }
 
 .doc-note::before {
