@@ -14,6 +14,7 @@ const navItems = [
   { id: 'deployment', label: 'Deployment', href: '#deployment' },
   { id: 'sda', label: 'SDA & ISE', href: '#sda' },
   { id: 'operations', label: 'Operations', href: '#operations' },
+  { id: 'vxlan', label: 'VXLAN / SDA', href: '#vxlan' },
   { id: 'devices', label: 'Devices', href: '#devices' },
   { id: 'troubleshooting', label: 'Troubleshooting', href: '#troubleshooting' },
   { id: 'roadmap', label: 'Roadmap', href: '#roadmap' },

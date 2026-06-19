@@ -331,6 +331,112 @@ function ContentSections({ expanded, toggleSection }) {
         <p>For network admins, the key operational flow is: ISE identifies endpoints and maps them to SGTs, DNA Center maps those tags to virtual networks and policy, and fabric edge devices enforce that policy using SXP/Sgt-to-IP mapping, VXLAN encapsulation, and LISP control-plane reachability.</p>
       </ExpandableSection>
 
+      <section id="vxlan" className="section">
+        <h2>VXLAN, LISP and SD-Access in DNA Center</h2>
+        <p className="lead">VXLAN is the SD-Access overlay protocol that delivers scalable segmentation, mobility, and centralized service control in DNA Center. LISP provides the fabric control plane for endpoint reachability and central data resolution.</p>
+        <div className="detail-grid">
+          <div className="detail-card">
+            <h3>Why VXLAN matters in DNA Center</h3>
+            <p>In a Cisco SD-Access fabric, VXLAN encapsulates tenant traffic inside UDP over the routed underlay. This means DNA Center can deliver virtual networks, guest segmentation, and secure mobility without relying on VLANs alone.</p>
+            <ul>
+              <li>Edge switches encapsulate user traffic with VXLAN headers and a VNID.</li>
+              <li>Control and data separation lets the underlay route tunnels while the overlay carries segmented user traffic.</li>
+              <li>Border nodes decapsulate traffic when it leaves the fabric, preserving policy enforcement and external connectivity.</li>
+            </ul>
+          </div>
+          <div className="detail-card">
+            <h3>LISP control plane and central data retrieval</h3>
+            <p>LISP is the control plane protocol that maps endpoint IDs (EIDs) to network locators (RLOCs). In DNA Center, LISP helps the fabric know where every endpoint is located across sites, and it enables central lookup of reachability and fabric information.</p>
+            <ul>
+              <li>Endpoints register with edge nodes, and edge nodes advertise LISP EID-to-RLOC bindings.</li>
+              <li>Central control-plane lookup means traffic can be forwarded to the right fabric node without manual routing changes.</li>
+              <li>Common diagnostic commands include <code>show lisp eid-table</code> and <code>show lisp database</code> on fabric edge and border devices.</li>
+            </ul>
+          </div>
+          <div className="detail-card">
+            <h3>DNS and DHCP in DNAC fabric</h3>
+            <p>DNA Center integrates DHCP and network services through site-level virtual network design. You can define DHCP pools in the DNAC UI and associate them with VLANs or access policies for end-user segments.</p>
+            <p><strong>To add a new DHCP pool:</strong></p>
+            <ol>
+              <li>Open <em>Design &gt; Network Settings &gt; DHCP Pools</em> in DNA Center.</li>
+              <li>Click <strong>Create DHCP Pool</strong> and enter the pool name, VLAN ID, subnet, gateway, DNS servers and lease settings.</li>
+              <li>Associate the pool with the correct Virtual Network or site-level configuration.</li>
+              <li>Save and deploy the change so fabric edge devices and DHCP relay settings pick up the new scope.</li>
+            </ol>
+            <p><strong>If a DHCP pool already exists:</strong> Create a second pool only if the new segment uses a different subnet or VLAN. If the same subnet is required, update the existing pool carefully and coordinate the change during a maintenance window to avoid IP conflicts.</p>
+            <p>In DNAC, the best practice is to define one DHCP pool per virtual network segment and use separate pools for guest, employee, voice, and IoT traffic.</p>
+          </div>
+        </div>
+
+        <div className="flow-chart">
+          <div className="flow-step">1. Define underlay routing and device reachability</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">2. Create virtual networks and VXLAN segments in DNAC</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">3. Enable LISP on fabric edge/border nodes for EID-to-RLOC mapping</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">4. Validate endpoint registration and policy enforcement</div>
+        </div>
+
+        <div className="detail-grid">
+          <div className="detail-card">
+            <h3>New switch onboarding for different zones</h3>
+            <p>When multiple switches arrive for separate zones, DNA Center lets you discover them in bulk and assign each to the correct site, role, and SDA fabric domain.</p>
+            <ol>
+              <li>Verify the switches have management IP addresses and are reachable from DNA Center.</li>
+              <li>Check that SNMP/CLI credentials are provisioned in <em>Platform &gt; Settings &gt; Credentials</em>.</li>
+              <li>Use <em>Provision &gt; Discovery</em> to add IP ranges or import device details.</li>
+              <li>Group discovered switches by zone/site and confirm their platform support.</li>
+              <li>Assign site roles such as edge, border, or access in the provisioning template.</li>
+              <li>Deploy the SDA fabric configuration and attach each switch to the correct virtual network segment.</li>
+              <li>Verify the fabric topology and endpoint health for each zone.</li>
+            </ol>
+          </div>
+          <div className="detail-card">
+            <h3>Single switch onboarding for flawless DNAC operation</h3>
+            <p>One switch can be added without disrupting the fabric if DNS, credentials, and site mapping are correct. DNA Center handles the device as part of the existing inventory and fabric topology.</p>
+            <ol>
+              <li>Confirm the single switch has a valid management IP and is on the same underlay routing domain.</li>
+              <li>Validate SNMP/CLI credentials in DNA Center.</li>
+              <li>Run device discovery and assign it to the proper site.</li>
+              <li>Apply the right role and template for access or edge use.</li>
+              <li>Deploy the configuration and confirm the device appears as ready in inventory.</li>
+              <li>Use Assurance to validate the new switch is reporting telemetry and that the fabric remains healthy.</li>
+            </ol>
+          </div>
+          <div className="detail-card">
+            <h3>Switch stacking in DNAC and SD-Access</h3>
+            <p>Stacked switches in DNA Center are often managed as a logical stack, with one stack master controlling member devices. In SD-Access, stacking simplifies deployment by presenting the stack as a single management object while still supporting fabric roles for the stack members.</p>
+            <ul>
+              <li>DNA Center discovers switch stacks and records individual member details alongside the stack master.</li>
+              <li>Stacked devices can share a single inventory entry if stack management is enabled.</li>
+              <li>In SD-Access, edge stacks can be assigned access roles and carry VXLAN overlay traffic consistently across members.</li>
+              <li>For stack-aware designs, use StackWise or StackWise Virtual and ensure the stack master is reachable from DNA Center.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flow-chart">
+          <div className="flow-step">A. Discover multiple switches</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">B. Assign each switch to its zone/site</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">C. Apply SDA role and virtual network</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">D. Deploy and verify fabric topology</div>
+        </div>
+
+        <div className="flow-chart">
+          <div className="flow-step">I. Open DHCP Pools in DNA Center</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">II. Create or update the pool for the target VLAN</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">III. Associate with the virtual network and deploy</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">IV. Validate address assignment and avoid overlapping scopes</div>
+        </div>
+      </section>
+
       <div className="insight-grid">
         <div className="insight-panel">
           <div className="insight-item"><span className="dot" /><div><strong>Underlay + Overlay</strong><p>The underlay is the routed physical network carrying VXLAN tunnels. The overlay handles endpoint traffic segmentation and mobility with LISP.</p></div></div>
